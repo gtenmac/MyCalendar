@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>行事曆</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl"
+        crossorigin="anonymous"></script>
+    <style>
+        .mapstyle {
+            width: 300px;
+            height: 300px;
+            margin-left: 80px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid" style="font-family: Microsoft JhengHei">
+        <div class="row" style="margin:20px">
+            <div class="col">
+
+            </div>
+            <div class="col">
+                <p style="font-size: 30px">
+                    <span id="year"></span> 年
+                    <span id="month"></span> 月</p>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-dark" id="left">
+                    ◄
+                </button>
+                <button type="button" class="btn btn-dark" id="right">
+                    ►
+                </button>
+            </div>
+            <div class="col">
+                
+            </div>
+            <div class="col">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-dark rounded-circle" data-toggle="modal" data-target="#modelId" style="float:right">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col text-center" id="year">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-center" id="month">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <table class="table table-bordered" style="height:1000px">
+            <thead style="text-align:center">
+                <tr>
+                    <th>SUN</th>
+                    <th>MON</th>
+                    <th>TUE</th>
+                    <th>WED</th>
+                    <th>THU</th>
+                    <th>FRI</th>
+                    <th>SAT</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true" style="font-family: Microsoft JhengHei">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modelTitleId">新增行程</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="row mt-3">
+                            <div class="col-2 text-right">
+                                <span>日期</span>
+                            </div>
+                            <div class="col-10">
+                                <input type="date" class="form-control" name="" id="date" aria-describedby="helpId" placeholder="">
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-2 text-right">
+                                <span>時間</span>
+                            </div>
+                            <div class="col-10">
+                                <input type="time" class="form-control" name="" id="time" aria-describedby="helpId" placeholder="">
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-2 text-right">
+                                <span>事項</span>
+                            </div>
+                            <div class="col-10">
+                                <input type="text" class="form-control" name="" id="title" aria-describedby="helpId" placeholder="">
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-2 text-right">
+                                <span>顏色</span>
+                            </div>
+                            <div class="col-10">
+                                <input type="color" style="height:50px" class="form-control" name="" id="color" aria-describedby="helpId" placeholder="">
+                                <!--<input type="color" value="#FFB7A8" id="color">-->
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-2 text-right">
+                                <span>地點</span>
+                            </div>
+                            <div class="col-10">
+                                <input type="text" class="form-control" name="" id="place" aria-describedby="helpId" placeholder="">
+                                <button id="addplace" type="button" class="btn btn-dark">➥</button>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-2 text-right">
+                                <div id="map" class="mapstyle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-dark" id="add" data-dismiss="modal">新增</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modifymodal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true" style="font-family: Microsoft JhengHei">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modelTitleId">修改行程</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="row mt-3">
+                            <div class="col-2 text-right">
+                                <span>日期</span>
+                            </div>
+                            <div class="col-10">
+                                <input type="date" class="form-control" name="" id="modifydate" aria-describedby="helpId" placeholder="">
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-2 text-right">
+                                <span>時間</span>
+                            </div>
+                            <div class="col-10">
+                                <input type="time" class="form-control" name="" id="modifytime" aria-describedby="helpId" placeholder="">
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-2 text-right">
+                                <span>事項</span>
+                            </div>
+                            <div class="col-10">
+                                <input type="text" class="form-control" name="" id="modifytitle" aria-describedby="helpId" placeholder="">
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-2 text-right">
+                                <span>顏色</span>
+                            </div>
+                            <div class="col-10">
+                                <input type="color" style="height:50px" class="form-control" name="" id="modifycolor" aria-describedby="helpId" placeholder="">
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-2 text-right">
+                                <span>地點</span>
+                            </div>
+                            <div class="col-10">
+                                <input type="text" class="form-control" name="" id="modifyplace" aria-describedby="helpId" placeholder="">
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-2 text-right">
+                                <div id="modifymap" class="mapstyle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-dark" data-dismiss="modal" id="delete">刪除</button>
+                    <button type="button" class="btn btn-dark" data-dismiss="modal" id="modify">修改</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLUgDdDXO8x8SXNfyuEL-DCp6ZVDd0yVY" async defer></script>
+    <script>
+        
+        var marker = null;
+        var marker2 = null;
+        var map1;
+        var map2;
+        var geocoder;
+
+        window.onload = function () {
+            map1 = new google.maps.Map(document.getElementById('map'), {
+                center: {
+                    lat: 24.7571075,
+                    lng: 120.952429
+                },
+                zoom: 15
+            });
+
+            map1.addListener('click', function (e) {
+                map1.setCenter(e.latLng);
+                if (marker == null) {
+                    marker = new google.maps.Marker({
+                        position: e.latLng,
+                        map: map1,
+                        title: e.latLng.toString()
+                    });
+                } else {
+                    marker.setPosition(e.latLng);
+                }
+                geocoder = new google.maps.Geocoder();
+                geocoder.geocode({
+                    'location': e.latLng
+                }, function (results, status) {
+                    if (status === 'OK') {
+                        document.getElementById('place').value = results[0].formatted_address;
+                        document.getElementById('place').name = e.latLng.lat() + "," + e.latLng.lng();
+                    }
+                });
+            });
+
+            document.getElementById('addplace').onclick = function () {
+                marker = null;
+                address = document.getElementById('place').value;
+                geocoder = new google.maps.Geocoder();
+                geocoder.geocode({
+                    'address': document.getElementById('place').value
+                }, function (results, status) {
+                    if (status === 'OK') {
+                        marker = new google.maps.Marker({
+                            position: results[0]['geometry']['location'],
+                            map: map1
+                        });
+                        map1.setCenter(results[0]['geometry']['location']);
+                        var test = results[0]['geometry']['location'].toString().split('(')[1].split(')')[0];
+                        document.getElementById('place').name = test;
+                    }
+                });
+            };
+
+            map2 = new google.maps.Map(document.getElementById('modifymap'), {
+                center: {
+                    lat: 24.7571075,
+                    lng: 120.952429
+                },
+                zoom: 15
+            });
+
+            map2.addListener('click', function (i) {
+                map2.setCenter(i.latLng);
+                if (marker2 == null) {
+                    marker2 = new google.maps.Marker({
+                        position: i.latLng,
+                        map: map2,
+                        title: i.latLng.toString()
+                        
+                    });
+                } else {
+                    marker2.setPosition(i.latLng);
+                }
+                geocoder = new google.maps.Geocoder();
+                geocoder.geocode({
+                    'location': i.latLng
+                }, function (results, status) {
+                    if (status === 'OK') {
+                        document.getElementById('modifyplace').value = results[0].formatted_address;
+                        document.getElementById('modifyplace').name = i.latLng.lat() + "," + i.latLng.lng();
+                    }
+                });
+            })
+        }
+
+        var today = new Date();
+        var thismonth = new Date();
+        createcalendar();
+
+        function createcalendar() {
+            document.getElementById("tbody").innerHTML = "";
+            today = new Date(thismonth.getFullYear(), thismonth.getMonth());
+            today.setDate(1);
+            while (today.getDay() != 0) {
+                today.setDate(today.getDate() - 1);
+            }
+            var tbody = document.getElementById("tbody");
+            for (var i = 0; i <= 5; i++) {
+
+                var tr = document.createElement("tr");
+                for (var j = 0; j <= 6; j++) {
+
+                    var td = document.createElement("td");
+                    var key = today.getFullYear();
+
+                    if (today.getMonth() == thismonth.getMonth()) {
+                        td.style = "color:black;width:233px";
+                    } else {
+                        td.style = "color:#dbdbdb;width:233px";
+                    }
+                    if (thismonth.getDate() == today.getDate() && thismonth.getMonth() == today.getMonth()) {
+                        td.style = "color:crimson";
+                    }
+                    td.innerText += today.getDate();
+
+
+                    if ((today.getMonth() + 1) < 10) {
+                        key += "-0" + (today.getMonth() + 1);
+                    } else {
+                        key += "-" + (today.getMonth() + 1);
+                    }
+                    if (today.getDate() < 10) {
+                        key += "-0" + today.getDate();
+                    } else {
+                        key += "-" + today.getDate();
+                    }
+                    if (localStorage.getItem(key) !== null) {
+                        var tmp = JSON.parse(localStorage.getItem(key))
+                        td.appendChild(adddata(tmp));
+                        console.log(key);
+                    }
+
+                    tr.appendChild(td);
+
+                    tbody.appendChild(tr);
+
+                    today.setDate(today.getDate() + 1);
+
+                }
+            }
+            document.getElementById("year").innerHTML = thismonth.getFullYear();
+            document.getElementById("month").innerHTML = thismonth.getMonth() + 1;
+        }
+
+        document.getElementById("left").onclick = function () {
+            thismonth.setMonth(thismonth.getMonth() - 1);
+            createcalendar();
+        }
+
+        document.getElementById("right").onclick = function () {
+            thismonth.setMonth(thismonth.getMonth() + 1);
+            createcalendar();
+        }
+
+        function createschedule(TIME, TITLE, COLOR, PLACE, LATLNG, DATE) {
+            console.log(document.getElementById(LATLNG).name);
+            var item = {
+                time: document.getElementById(TIME).value,
+                title: document.getElementById(TITLE).value,
+                color: document.getElementById(COLOR).value,
+                place: document.getElementById(PLACE).value,
+                latLng: document.getElementById(LATLNG).name
+            }
+
+            if (localStorage.getItem(document.getElementById(DATE).value) === null) {
+                var data = {
+                    date: document.getElementById(DATE).value,
+                    schedule: []
+                }
+                data.schedule.push(item);
+                localStorage.setItem(document.getElementById(DATE).value, JSON.stringify(data));
+            } else {
+                var items = JSON.parse(localStorage.getItem(document.getElementById(DATE).value));
+                items.schedule.push(item);
+                localStorage.setItem(document.getElementById(DATE).value, JSON.stringify(items));
+            }
+            console.log(JSON.parse(localStorage.getItem(document.getElementById(DATE).value)));
+            createcalendar();
+        }
+
+        document.getElementById("add").onclick = function () {
+            createschedule("time", "title", "color", "place", "place", "date");
+        }
+
+        function adddata(A) {
+            document.getElementById("date").value = "";
+            document.getElementById("time").value = "";
+            document.getElementById("title").value = "";
+            document.getElementById("color").value = "#F9A3A3";
+            document.getElementById("place").value = "";
+
+            var ul = document.createElement("ul");
+            ul.className = "pl-0";
+            var j = 0;
+            for (var i of A.schedule) {
+                var li = document.createElement("li");
+                li.className = "mt-1 mb-1";
+                li.style = "list-style:none";
+                var button = document.createElement("button");
+                button.className = "btn btn-block text-left";
+                button.style = "background-color:" + i.color;
+                button.dataset.toggle = "modal";
+                button.dataset.target = "#modifymodal";
+
+                button.id = A.date + "," + j;
+                button.onclick = function () {
+                    console.log(this.id);
+                    var tmp = this.id.split(',')
+                    console.log(tmp)
+                    var store = JSON.parse(localStorage.getItem(tmp[0])).schedule[tmp[1]];
+                    console.log(store);
+                    document.getElementById("modifydate").value = tmp[0];
+                    document.getElementById("modifytime").value = store.time;
+                    document.getElementById("modifytitle").value = store.title;
+                    document.getElementById("modifycolor").value = store.color;
+                    document.getElementById("modifyplace").value = store.place;
+                    document.getElementById("modifyplace").name = store.latLng;
+                    document.getElementById("delete").value = this.id;
+                    document.getElementById("modify").value = this.id;
+                    var test = store.latLng.split(',');
+                    map2.setCenter(new google.maps.LatLng(test[0], test[1]));
+                    marker2 = new google.maps.Marker({
+                        position: new google.maps.LatLng(test[0], test[1]),
+                        map: map2,
+                        title: store.place
+                    })
+                }
+                console.log(i.color);
+                button.innerHTML = i.time + "&nbsp&nbsp" + i.title;
+                li.appendChild(button);
+                ul.appendChild(li);
+                j++;
+            }
+            return ul;
+            console.log(ul);
+        }
+
+        document.getElementById("delete").onclick = function () {
+            var tmp = this.value.split(',');
+            var store = JSON.parse(localStorage.getItem(tmp[0]));
+            store.schedule.splice(tmp[1], 1);
+            console.log(store);
+            localStorage.setItem(tmp[0], JSON.stringify(store));
+            createcalendar();
+        }
+
+        document.getElementById("modify").onclick = function () {
+            var tmp = this.value.split(',');
+            var store = JSON.parse(localStorage.getItem(tmp[0]));
+            store.schedule.splice(tmp[1], 1);
+            localStorage.setItem(tmp[0], JSON.stringify(store));
+            createschedule("modifytime", "modifytitle", "modifycolor", "modifyplace", "modifyplace", "modifydate");
+        }
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
