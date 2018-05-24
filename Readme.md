@@ -14,4 +14,4 @@
 * 透過新增行程裡的地圖，透過API來轉換經緯度，並一起存放然後標記起來
 * 每個日曆上的行程是一個Button，而在新增的時候就會註冊onclick以便於修改，並且也會把這個行程的Index放在Button的Value，就不必再比對是哪一個行程而在刪除。
 ## 圖片
-![Alt text](/path/to/img.jpg)
+![Alt text](https://github.com/gtenmac/MyCalendar/blob/master/%E8%A1%8C%E4%BA%8B%E6%9B%86.png)
